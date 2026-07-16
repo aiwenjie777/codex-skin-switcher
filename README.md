@@ -13,6 +13,21 @@
   非官方社区项目 · 仅通过本机回环 CDP 工作 · 不修改 <code>.app</code>、<code>app.asar</code> 或代码签名。
 </p>
 
+## 微信交流
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="./docs/images/wechat-qr.png" alt="Codex Dream Skin 微信交流群二维码" width="220"><br>
+      <sub>微信群：扫码加入交流</sub>
+    </td>
+    <td align="center">
+      <img src="./docs/images/wechat.png" alt="作者个人微信二维码" width="220"><br>
+      <sub>个人微信：添加时请备注“Codex Skin”</sub>
+    </td>
+  </tr>
+</table>
+
 ## 30 秒开始
 
 ### macOS（完整版本）
@@ -80,21 +95,6 @@ Windows 入口与说明见 [`windows/`](./windows/)：先运行 `scripts/install
 - 问题与功能建议：[Issue 模板](./.github/ISSUE_TEMPLATE/)
 - 提交改动：[PR 模板](./.github/pull_request_template.md)
 - 许可与声明：[`macos/LICENSE`](./macos/LICENSE) · [`macos/NOTICE.md`](./macos/NOTICE.md)
-
-## 微信交流
-
-<table align="center">
-  <tr>
-    <td align="center">
-      <img src="./docs/images/wechat-qr.png" alt="Codex Dream Skin 微信交流群二维码" width="220"><br>
-      <sub>微信群：扫码加入交流</sub>
-    </td>
-    <td align="center">
-      <img src="./docs/images/wechat.png" alt="作者个人微信二维码" width="220"><br>
-      <sub>个人微信：添加时请备注“Codex Skin”</sub>
-    </td>
-  </tr>
-</table>
 
 ---
 
