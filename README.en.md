@@ -1,4 +1,4 @@
-# Codex Dream Skin
+# Codex Skin Switcher
 
 <p align="center">
   <a href="./README.md">中文</a> · <strong>English</strong>
