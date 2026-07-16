@@ -17,6 +17,12 @@
   非 OpenAI 官方产品。不修改 <code>.app</code> / <code>app.asar</code> / WindowsApps。
 </p>
 
+> ## 二次开发与来源声明
+>
+> 本仓库基于 [Fei-Away/Codex-Dream-Skin](https://github.com/Fei-Away/Codex-Dream-Skin) 进行二次开发与维护，并遵循原项目的 [MIT License](./macos/LICENSE)。
+>
+> 原项目作者及贡献者保留其对应的版权声明；本仓库的新增和修改内容以提交记录为准。详见 [NOTICE.md](./macos/NOTICE.md)。
+
 ## 赞助商
 
 <p align="center">
