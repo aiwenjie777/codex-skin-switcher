@@ -117,12 +117,20 @@
 - 路径对照：[`docs/platforms.md`](./docs/platforms.md)
 - 项目记录：[`docs/PROJECT.md`](./docs/PROJECT.md)
 
-## 微信交流群
+## 微信交流
 
-<p align="center">
-  <img src="./docs/images/wechat-qr.png" alt="Codex Dream Skin 微信交流群二维码" width="260"><br>
-  <sub>扫码加入微信群。二维码有效期至 2026 年 7 月 23 日；失效后将更新。</sub>
-</p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="./docs/images/wechat-qr.png" alt="Codex Dream Skin 微信交流群二维码" width="240"><br>
+      <sub>微信群：扫码加入交流<br>有效期至 2026 年 7 月 23 日，失效后将更新</sub>
+    </td>
+    <td align="center">
+      <img src="./docs/images/wechat.png" alt="作者个人微信二维码" width="240"><br>
+      <sub>个人微信：添加时请备注“Codex Dream Skin”</sub>
+    </td>
+  </tr>
+</table>
 
 ## 反馈与贡献
 
