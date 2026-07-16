@@ -5,16 +5,16 @@
 </p>
 
 <p align="center">
-  <strong>给 Codex 桌面端换一张会呼吸的脸。</strong><br>
-  外部主题 / 换肤工具 · 本机 CDP 注入 · 不改官方安装包
+  <strong>为 Codex 桌面端打造可自由切换的个性主题。</strong><br>
+  主题切换 / 个性化换肤工具 · 本机 CDP 注入 · 不修改官方安装包
 </p>
 
 <p align="center">
-  一张图，一种心情 · 写代码，也要有氛围感
+  一张图，一个主题 · 让编码界面更有你的风格
 </p>
 
 <p align="center">
-  非 OpenAI 官方产品。不修改 <code>.app</code> / <code>app.asar</code> / WindowsApps。
+  非官方社区项目；不修改 <code>.app</code> / <code>app.asar</code> / WindowsApps。
 </p>
 
 ## 微信交流
