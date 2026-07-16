@@ -1,7 +1,6 @@
 ---
-name: codex-dream-skin-studio
-description: Install, customize, launch, verify, repair, update, or restore Codex Dream Skin Studio on macOS. Use when a user wants to turn a personal image into a Codex banner and task background while preserving the native interface, or needs safe CDP theme troubleshooting and rollback.
-compatibility: macOS, official Codex Desktop app, signed bundled Node.js 20 or newer
+name: codex-skin
+description: Manage Codex Dream Skin on macOS. Use when a user wants to install, customize, launch, verify, repair, update, or restore the skin; turn a personal image into a Codex banner and task background while preserving the native interface; or troubleshoot and roll back the safe local CDP theme runtime.
 ---
 
 # Codex Dream Skin Studio
