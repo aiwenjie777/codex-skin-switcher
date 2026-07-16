@@ -32,13 +32,6 @@
   </tr>
 </table>
 
-> ## 二次开发与来源声明
->
-> 本仓库基于 [Fei-Away/Codex-Dream-Skin](https://github.com/Fei-Away/Codex-Dream-Skin) 进行二次开发与维护，并遵循原项目的 [MIT License](./macos/LICENSE)。
->
-> 原项目作者及贡献者保留其对应的版权声明；本仓库的新增和修改内容以提交记录为准。详见 [NOTICE.md](./macos/NOTICE.md)。
->
-
 ## 效果预览
 
 一张图，一种心情。下面都是可落地的主题示意效果：
@@ -136,5 +129,11 @@
 - 效果图中的人物 / IP 形象仅作主题示意；商用或公开再分发请自行确认肖像权与商标授权
 
 ---
+
+**二次开发与来源声明**
+
+本仓库基于 [Fei-Away/Codex-Dream-Skin](https://github.com/Fei-Away/Codex-Dream-Skin) 进行二次开发与维护，并遵循原项目的 [MIT License](https://github.com/aiwenjie777/codex-skin-switcher/blob/main/macos/LICENSE)。
+
+原项目作者及贡献者保留其对应的版权声明；本仓库的新增和修改内容以提交记录为准。详见 [NOTICE.md](https://github.com/aiwenjie777/codex-skin-switcher/blob/main/macos/NOTICE.md)。
 
 Star 一下，然后挑一张图，把你的 Codex 变成今天想要的样子。
