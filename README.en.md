@@ -1,131 +1,86 @@
-# Codex Skin Skill
+# Codex Skin
 
 <p align="center">
   <a href="./README.md">中文</a> · <strong>English</strong>
 </p>
 
 <p align="center">
-  <strong>Give Codex a face that breathes.</strong><br>
-  External themes for the Codex desktop app · Local CDP inject · No official package mutation
+  <strong>Give Codex Desktop a skin that is unmistakably yours.</strong><br>
+  Turn one image into a home banner and task background while keeping the native sidebar, project picker, and composer.
 </p>
 
 <p align="center">
-  One image, one mood · Code with atmosphere
+  Unofficial community project · local loopback CDP only · never modifies <code>.app</code>, <code>app.asar</code>, or code signatures.
 </p>
 
-<p align="center">
-  Unofficial. Does not modify <code>.app</code> / <code>app.asar</code> / WindowsApps.
-</p>
+## Get started in 30 seconds
 
-## Sponsors
+### macOS (full experience)
 
-<p align="center">
-  <a href="https://passion8.cc/register?aff=TuPe">
-    <img src="docs/images/sponsor-passion8.png" alt="Passion8" height="72">
-  </a>
-</p>
+1. Open [`macos/`](./macos/) and double-click `Install Codex Dream Skin.command`.
+2. Double-click `Customize Codex Dream Skin.command`, choose an image in Finder, and name the theme.
+3. Double-click `Start Codex Dream Skin.command` to apply it. It prefers hot re-apply when Codex is already running.
+4. Double-click `Verify Codex Dream Skin.command` whenever you want a screenshot check; the screenshot is saved to your Desktop.
 
-<p align="center">
-  <strong>Smarter Connections · Passionate Creation</strong><br>
-  <sub>Connect AI · Power Creation</sub>
-</p>
+To return to the stock interface, double-click `Restore Codex Dream Skin.command`.
 
-<p align="center">
-  Thanks to <a href="https://passion8.cc/register?aff=TuPe"><strong>passion8.cc</strong></a> for sponsoring this project.<br>
-  Full-power AI gateway: official models, no silent downgrades, no wrapper shells.<br>
-  One-line setup for Codex / Claude Code / Grok.
-</p>
+### Windows
 
-<p align="center">
-  <sub>
-    Theme install and API config stay separate — this project never rewrites your provider settings.
-  </sub>
-</p>
+See [`windows/`](./windows/). Run `scripts/install-dream-skin.ps1`, then `scripts/start-dream-skin.ps1`.
+
+> Launch the official Codex Desktop once before using the macOS installer. After installation, the engine is in `~/.codex/codex-dream-skin-studio`; images, theme state, and logs are in `~/Library/Application Support/CodexDreamSkinStudio`.
+
+## What you get
+
+- **Native interaction** — The sidebar, suggestion cards, project picker, task content, and composer remain real Codex controls, never a full-window screenshot.
+- **One image, one theme** — Choose an image to create a banner and low-noise task background; switch again whenever you like.
+- **Verifiable and reversible** — Use the screenshot verifier, then restore the stock appearance in one step.
+- **Clear safety boundary** — CDP binds to `127.0.0.1` only. No official binary, signature, API key, Base URL, or model provider is changed.
 
 ## Gallery
 
-One image, one mood. Real theme previews you can ship:
-
 <p align="center">
-  <img src="docs/images/gallery/skin-01.jpg" alt="Pink Custom" width="900"><br>
-  <sub>Pink Custom</sub>
+  <img src="assets/e160a0ccf5ab668284bde06b3c18de85.png" alt="Codex Skin theme preview" width="900">
 </p>
 
 <p align="center">
-  <img src="docs/images/gallery/skin-02.jpg" alt="God of Wealth" width="900"><br>
-  <sub>God of Wealth</sub>
+  <img src="docs/images/gallery/skin-01.jpg" alt="Pink custom theme" width="440">
+  <img src="docs/images/gallery/skin-06.jpg" alt="Purple night theme" width="440">
 </p>
 
 <p align="center">
-  <img src="docs/images/gallery/skin-03.jpg" alt="Red-White Sci-Fi" width="900"><br>
-  <sub>Red-White Sci-Fi</sub>
+  <img src="docs/images/gallery/skin-03.jpg" alt="Red-white sci-fi theme" width="440">
+  <img src="docs/images/gallery/skin-08.jpg" alt="Stage black-gold theme" width="440">
 </p>
 
-<p align="center">
-  <img src="docs/images/gallery/skin-04.jpg" alt="Clear Custom" width="900"><br>
-  <sub>Clear Custom</sub>
-</p>
+For more previews, image guidance, and macOS command-line options, see [`macos/README.md`](./macos/README.md).
 
-<p align="center">
-  <img src="docs/images/gallery/skin-05.jpg" alt="Inspiration" width="900"><br>
-  <sub>Inspiration</sub>
-</p>
+## Use the `codex-skin` skill
 
-<p align="center">
-  <img src="docs/images/gallery/skin-06.jpg" alt="Purple Night" width="900"><br>
-  <sub>Purple Night</sub>
-</p>
+After installing the global skill, tell Codex what you want to do:
 
-<p align="center">
-  <img src="docs/images/gallery/skin-07.jpg" alt="Hatsune Miku" width="900"><br>
-  <sub>Hatsune Miku</sub>
-</p>
+- “Install Codex Skin”
+- “Customize Codex Skin with this image”
+- “Apply the active theme and verify it with a screenshot”
+- “Restore the official Codex appearance”
 
-<p align="center">
-  <img src="docs/images/gallery/skin-08.jpg" alt="Stage Black-Gold" width="900"><br>
-  <sub>Stage Black-Gold</sub>
-</p>
-
-## What it does
-
-- **Real UI** — Sidebar, cards, project picker, and input stay native. Not a fake full-window screenshot.
-- **Swappable art** — Drop in an image you like and it becomes your theme.
-- **Restorable** — One-click restore to the stock look.
-- **Safer path** — Local-loopback CDP inject only. No official binary or signature changes.
-
-## Quick start
-
-Platform scripts are ready — different plumbing, same goal: theme Codex.
-
-| Platform | Dir | Entry |
-|------|------|------|
-| Apple Silicon / Intel Mac | [`macos/`](./macos/) | Double-click `Install Codex Dream Skin.command` |
-| Windows | [`windows/`](./windows/) | `scripts/install-dream-skin.ps1` → `start-dream-skin.ps1` |
-
-More detail:
-
-- Mac: [`macos/README.md`](./macos/README.md)
-- Windows: [`windows/SKILL.md`](./windows/SKILL.md)
-- Paths: [`docs/platforms.md`](./docs/platforms.md)
-- Project notes: [`docs/PROJECT.md`](./docs/PROJECT.md)
-
-## Feedback & contributions
-
-- **Issues:** Use the [issue templates](./.github/ISSUE_TEMPLATE/) (bug / feature). Blank issues are disabled. Please try Verify / Restore self-checks before filing bugs.
-- **PRs:** Follow the [PR template](./.github/pull_request_template.md) — describe the change and tick the self-checks you actually ran (e.g. `macos/tests/run-tests.sh`, verify / restore).
+The skill uses the same safe operations for installation, customization, hot re-apply, verification, and restore. It asks before a restart.
 
 ## Safety
 
-- CDP binds `127.0.0.1` only — avoid untrusted local processes while the theme runs.
-- Does not touch the official install directory or code signature.
-- **Never** rewrites API Key / Base URL; relay and theme stay separate.
+- The theme injects through local-loopback CDP only. Avoid untrusted local processes while it is active.
+- It never modifies the official Codex install directory, binary, `app.asar`, or code signature.
+- Theme installation and API relay configuration are separate. This project never silently rewrites API keys, Base URLs, or model providers.
+- People and IP artwork in previews is illustrative. Confirm the relevant rights before commercial or public redistribution.
 
-## License
+## Docs and contributions
 
-- See [`macos/LICENSE`](./macos/LICENSE) (MIT) and [`macos/NOTICE.md`](./macos/NOTICE.md)
-- Unofficial; Codex and related rights belong to their owners.
-- People / IP art in previews is illustrative only — clear rights before commercial redistribution.
+- macOS guide and CLI options: [`macos/README.md`](./macos/README.md)
+- Platform paths: [`docs/platforms.md`](./docs/platforms.md)
+- Bugs and feature requests: [issue templates](./.github/ISSUE_TEMPLATE/)
+- Changes: [PR template](./.github/pull_request_template.md)
+- License and notices: [`macos/LICENSE`](./macos/LICENSE) · [`macos/NOTICE.md`](./macos/NOTICE.md)
 
 ---
 
-Star it, pick a look, and make Codex yours for today.
+This repository is derived from [Fei-Away/Codex-Dream-Skin](https://github.com/Fei-Away/Codex-Dream-Skin) and follows its [MIT License](./macos/LICENSE). Codex and related rights belong to their respective owners; this project is not affiliated with OpenAI.
