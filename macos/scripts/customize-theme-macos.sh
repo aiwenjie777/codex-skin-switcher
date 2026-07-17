@@ -73,8 +73,22 @@ else
   trap - EXIT
 fi
 
+# Every image-based theme is saved to the library before it becomes active, so it
+# can be selected later from the one-click manager.
+THEME_ID="$("$NODE" -e 'try { const t = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); process.stdout.write(t.id || ""); } catch {}' "$THEME_DIR/theme.json")"
+case "$THEME_ID" in ''|*[!A-Za-z0-9._-]*) fail "The generated theme has an invalid ID." ;; esac
+THEMES_ROOT="$STATE_ROOT/themes"
+THEME_LIBRARY_TMP="$THEMES_ROOT/.${THEME_ID}.$$.saving"
+/bin/mkdir -p "$THEMES_ROOT"
+/bin/rm -rf "$THEME_LIBRARY_TMP"
+/bin/mkdir -p "$THEME_LIBRARY_TMP"
+/usr/bin/rsync -a --exclude '.DS_Store' "$THEME_DIR/" "$THEME_LIBRARY_TMP/"
+/bin/chmod 600 "$THEME_LIBRARY_TMP"/* 2>/dev/null || true
+/bin/rm -rf "$THEMES_ROOT/$THEME_ID"
+/bin/mv "$THEME_LIBRARY_TMP" "$THEMES_ROOT/$THEME_ID"
+
 if [ "$APPLY_NOW" = "true" ]; then
   "$SCRIPT_DIR/start-dream-skin-macos.sh" --port 9341 --prompt-restart
 fi
 
-printf 'Codex Dream Skin Studio theme is ready.\n'
+printf 'Codex Dream Skin Studio theme is ready and saved in your theme library.\n'

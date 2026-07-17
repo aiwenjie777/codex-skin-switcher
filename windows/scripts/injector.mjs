@@ -4,9 +4,18 @@ import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
+const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost", "[::1]"]);
+
+function validatedDebuggerUrl(target, port) {
+  const url = new URL(target.webSocketDebuggerUrl);
+  if (url.protocol !== "ws:" || !LOOPBACK_HOSTS.has(url.hostname) || Number(url.port) !== port) {
+    throw new Error(`Rejected non-loopback CDP WebSocket URL: ${url.href}`);
+  }
+  return url.href;
+}
 
 function parseArgs(argv) {
-  const options = { port: 9335, mode: "watch", timeoutMs: 30000, screenshot: null, reload: false };
+  const options = { port: 9335, mode: "watch", timeoutMs: 30000, screenshot: null, reload: false, theme: null };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === "--port") options.port = Number(argv[++i]);
@@ -16,6 +25,7 @@ function parseArgs(argv) {
     else if (arg === "--remove") options.mode = "remove";
     else if (arg === "--timeout-ms") options.timeoutMs = Number(argv[++i]);
     else if (arg === "--screenshot") options.screenshot = path.resolve(argv[++i]);
+    else if (arg === "--theme") options.theme = argv[++i];
     else if (arg === "--reload") options.reload = true;
     else throw new Error(`Unknown argument: ${arg}`);
   }
@@ -25,10 +35,17 @@ function parseArgs(argv) {
   return options;
 }
 
+function validateThemeName(theme) {
+  const name = String(theme ?? "").trim();
+  if (!name) return null;
+  if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}$/.test(name)) throw new Error(`Invalid theme name: ${name}`);
+  return name;
+}
+
 class CdpSession {
-  constructor(target) {
+  constructor(target, port) {
     this.target = target;
-    this.ws = new WebSocket(target.webSocketDebuggerUrl);
+    this.ws = new WebSocket(validatedDebuggerUrl(target, port));
     this.nextId = 1;
     this.pending = new Map();
     this.listeners = new Map();
@@ -107,7 +124,10 @@ async function waitForTargets(port, timeoutMs) {
       const response = await fetch(`http://127.0.0.1:${port}/json/list`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const targets = await response.json();
-      const pages = targets.filter((item) => item.type === "page" && item.url.startsWith("app://"));
+      const pages = targets.filter((item) => {
+        if (item.type !== "page" || !item.url?.startsWith("app://") || !item.webSocketDebuggerUrl) return false;
+        try { validatedDebuggerUrl(item, port); return true; } catch { return false; }
+      });
       if (pages.length) return pages;
     } catch (error) {
       lastError = error;
@@ -117,11 +137,23 @@ async function waitForTargets(port, timeoutMs) {
   throw new Error(`No Codex renderer target on 127.0.0.1:${port}: ${lastError?.message ?? "timed out"}`);
 }
 
-async function loadPayload() {
+async function firstExisting(paths) {
+  for (const candidate of paths) { try { await fs.access(candidate); return candidate; } catch {} }
+  return null;
+}
+
+async function loadPayload(theme) {
+  const name = validateThemeName(theme);
+  const themeDir = name ? path.join(root, "themes", name) : null;
+  if (themeDir && !(await fs.stat(themeDir).catch(() => null))?.isDirectory()) throw new Error(`Theme not found: ${name}`);
+  const [cssPath, artPath] = await Promise.all([
+    themeDir ? firstExisting([path.join(themeDir, "dream-skin.css")]) : null,
+    themeDir ? firstExisting(["dream-reference.png", "background.png", "background.jpg", "background.jpeg", "background.webp"].map((file) => path.join(themeDir, file))) : null,
+  ]);
   const [css, template, art] = await Promise.all([
-    fs.readFile(path.join(root, "assets", "dream-skin.css"), "utf8"),
+    fs.readFile(cssPath ?? path.join(root, "assets", "dream-skin.css"), "utf8"),
     fs.readFile(path.join(root, "assets", "renderer-inject.js"), "utf8"),
-    fs.readFile(path.join(root, "assets", "dream-reference.png")),
+    fs.readFile(artPath ?? path.join(root, "assets", "dream-reference.png")),
   ]);
   const artDataUrl = `data:image/png;base64,${art.toString("base64")}`;
   return template
@@ -129,8 +161,8 @@ async function loadPayload() {
     .replace("__DREAM_ART_JSON__", JSON.stringify(artDataUrl));
 }
 
-async function connectTarget(target) {
-  return new CdpSession(target).open();
+async function connectTarget(target, port) {
+  return new CdpSession(target, port).open();
 }
 
 async function applyToSession(session, payload) {
@@ -219,10 +251,10 @@ async function capture(session, outputPath) {
 
 async function runOneShot(options) {
   const targets = await waitForTargets(options.port, options.timeoutMs);
-  const payload = (options.mode === "once" || options.reload) ? await loadPayload() : null;
+  const payload = (options.mode === "once" || options.reload) ? await loadPayload(options.theme) : null;
   const results = [];
   for (const target of targets) {
-    const session = await connectTarget(target);
+    const session = await connectTarget(target, options.port);
     try {
       if (options.mode === "remove") await removeFromSession(session);
       else if (options.mode === "once") await applyToSession(session, payload);
@@ -250,7 +282,7 @@ async function runOneShot(options) {
 }
 
 async function runWatch(options) {
-  const payload = await loadPayload();
+  const payload = await loadPayload(options.theme);
   const sessions = new Map();
   let stopping = false;
   const stop = () => { stopping = true; };
@@ -278,7 +310,7 @@ async function runWatch(options) {
     for (const target of targets) {
       if (sessions.has(target.id)) continue;
       try {
-        const session = await connectTarget(target);
+        const session = await connectTarget(target, options.port);
         session.on("Page.loadEventFired", () => {
           setTimeout(() => applyToSession(session, payload).catch((error) => {
             console.error(`[dream-skin] reinject failed: ${error.message}`);

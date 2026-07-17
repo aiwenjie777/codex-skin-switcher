@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
-const SKIN_VERSION = "1.1.1";
+const SKIN_VERSION = "1.3.4";
 const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost", "[::1]"]);
 const MAX_ART_BYTES = 16 * 1024 * 1024;
 
@@ -15,6 +15,7 @@ function parseArgs(argv) {
     timeoutMs: 30000,
     screenshot: null,
     reload: false,
+    requireTask: false,
     themeDir: null,
   };
   for (let i = 0; i < argv.length; i += 1) {
@@ -29,6 +30,7 @@ function parseArgs(argv) {
     else if (arg === "--screenshot") options.screenshot = path.resolve(argv[++i]);
     else if (arg === "--theme-dir") options.themeDir = path.resolve(argv[++i]);
     else if (arg === "--reload") options.reload = true;
+    else if (arg === "--require-task") options.requireTask = true;
     else throw new Error(`Unknown argument: ${arg}`);
   }
   if (!Number.isInteger(options.port) || options.port < 1024 || options.port > 65535) {
@@ -266,10 +268,13 @@ async function loadTheme(themeDir) {
 }
 
 async function loadPayload(themeDir) {
-  const [css, template, loaded] = await Promise.all([
-    fs.readFile(path.join(root, "assets", "dream-skin.css"), "utf8"),
+  const loaded = await loadTheme(themeDir);
+  const cssPath = await fs.access(path.join(loaded.assetsRoot, "dream-skin.css"))
+    .then(() => path.join(loaded.assetsRoot, "dream-skin.css"))
+    .catch(() => path.join(root, "assets", "dream-skin.css"));
+  const [css, template] = await Promise.all([
+    fs.readFile(cssPath, "utf8"),
     fs.readFile(path.join(root, "assets", "renderer-inject.js"), "utf8"),
-    loadTheme(themeDir),
   ]);
   const { imagePath, theme } = loaded;
   const art = await fs.readFile(imagePath);
@@ -356,6 +361,7 @@ async function verifySession(session) {
         x: document.documentElement.scrollWidth > document.documentElement.clientWidth,
         y: document.documentElement.scrollHeight > document.documentElement.clientHeight,
       },
+      taskContent: box(document.querySelector('[data-message-author-role], article, [class*="markdown"], [class*="prose"]')),
     };
     const basePass = result.installed && result.version === ${JSON.stringify(SKIN_VERSION)} &&
       result.stylePresent && result.chromePresent && result.chromePointerEvents === 'none' &&
@@ -366,6 +372,7 @@ async function verifySession(session) {
       result.visibleCardCount >= 1 && result.visibleCardCount <= 6
     );
     result.pass = Boolean(basePass && homePass);
+    result.taskPass = !result.homeRoute && Boolean(result.taskContent?.visible) && Boolean(result.composer?.visible) && Boolean(result.sidebar?.visible);
     result.softNotes = {
       projectButtonOptional: !result.projectButton?.visible,
     };
@@ -425,6 +432,7 @@ async function runOneShot(options) {
       const result = options.mode === "remove"
         ? await verifyRemovedSession(session)
         : await waitForVerifiedSession(session, options.timeoutMs);
+      if (options.requireTask && options.mode !== "remove") result.pass = Boolean(result.pass && result.taskPass);
       results.push({ targetId: target.id, title: target.title, url: target.url, probe, result });
 
       if (options.screenshot && !screenshotCaptured) {

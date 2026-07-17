@@ -40,22 +40,32 @@ PAYLOAD_JSON="$("$NODE" "$ROOT/scripts/injector.mjs" --check-payload --theme-dir
 "$NODE" "$ROOT/scripts/write-theme.mjs" reset-demo --output-dir "$TMP/theme" >/dev/null
 [ ! -e "$TMP/theme" ]
 
-CONFIG="$TMP/config.toml"
-BACKUP="$TMP/theme-backup.json"
-/usr/bin/printf '%s\n' \
-  'model = "gpt-5"' \
-  '' \
-  '[desktop]' \
-  'appearanceTheme = "system"' \
-  'appearanceDarkCodeThemeId = "vscode-dark"' \
-  'keepMe = true' > "$CONFIG"
-/bin/cp "$CONFIG" "$TMP/original.toml"
-"$NODE" "$ROOT/scripts/theme-config.mjs" install "$CONFIG" "$BACKUP" >/dev/null
-/usr/bin/grep -q 'appearanceTheme = "dark"' "$CONFIG"
-"$NODE" "$ROOT/scripts/theme-config.mjs" restore "$CONFIG" "$BACKUP" >/dev/null
-/usr/bin/cmp -s "$CONFIG" "$TMP/original.toml"
+SKIN="$TMP/skin"
+/bin/mkdir -p "$SKIN"
+/bin/cp "$ROOT/assets/portal-hero.png" "$SKIN/background.png"
+/usr/bin/printf '%s\n' '{"schemaVersion":1,"image":"background.png"}' > "$SKIN/theme.json"
+/usr/bin/printf '%s\n' '{"schemaVersion":1,"id":"test-skin","name":"Test Skin","version":"1.0.0","platforms":["macos"],"files":{"theme":"theme.json","background":"background.png"}}' > "$SKIN/skin.json"
+"$NODE" "$ROOT/scripts/skin-package.mjs" install "$SKIN" --output-dir "$TMP/themes/test-skin" >/dev/null
+[ -f "$TMP/themes/test-skin/theme.json" ]
+[ -f "$TMP/themes/test-skin/installed-skin.json" ]
 
-/usr/bin/env -u HOME /bin/bash -c '. "$1/scripts/common-macos.sh"; [ -n "$HOME" ] && [ "$SKIN_VERSION" = "1.1.1" ]' _ "$ROOT"
+"$NODE" "$ROOT/scripts/theme-config.mjs" | /usr/bin/grep -q 'never reads or writes Codex config.toml'
+
+/usr/bin/env -u HOME /bin/bash -c '. "$1/scripts/common-macos.sh"; [ -n "$HOME" ] && [ "$SKIN_VERSION" = "1.3.4" ]' _ "$ROOT"
+
+/usr/bin/grep -q '/usr/bin/nohup "\$CODEX_EXE"' "$ROOT/scripts/common-macos.sh"
+if /usr/bin/sed -n '/^launch_codex_with_cdp()/,/^}/p' "$ROOT/scripts/common-macos.sh" | /usr/bin/grep -q 'open -na'; then
+  printf 'CDP launcher must not use open -na because recent Codex builds can drop Chromium flags.\n' >&2
+  exit 1
+fi
+/usr/bin/grep -q -- '--internal-restart-worker' "$ROOT/scripts/start-dream-skin-macos.sh"
+/usr/bin/grep -q '<key>KeepAlive</key><false/>' "$ROOT/scripts/start-dream-skin-macos.sh"
+/usr/bin/grep -q -- '--internal-restore-worker' "$ROOT/scripts/restore-dream-skin-macos.sh"
+/usr/bin/grep -q '<key>KeepAlive</key><false/>' "$ROOT/scripts/restore-dream-skin-macos.sh"
+if /usr/bin/grep -q 'open -na.*remote-debugging' "$ROOT/scripts/start-dream-skin-macos.sh"; then
+  printf 'Start script must not spawn a second normal Codex instance while enabling CDP.\n' >&2
+  exit 1
+fi
 "$ROOT/scripts/doctor-macos.sh" >/dev/null
 
-printf 'PASS: syntax, payload, custom-theme, config round-trip, HOME recovery, signature, and doctor checks.\n'
+printf 'PASS: syntax, payload, custom-theme, skin-package library install, config isolation, HOME recovery, signature, and doctor checks.\n'

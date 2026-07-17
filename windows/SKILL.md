@@ -9,11 +9,13 @@ Apply a reversible renderer skin through Chromium DevTools Protocol while launch
 
 ## Workflow
 
-1. Run `scripts/install-dream-skin.ps1` once to set the matching official base colors and create launch/restore shortcuts.
+Run this workflow directly when the skill is invoked. Do not tell the user to open PowerShell or click a shortcut unless they explicitly ask for manual instructions.
+
+1. Run `scripts/install-dream-skin.ps1` once to initialize local state and create optional launch/restore shortcuts. It must not read or change Codex `config.toml`.
 2. Run `scripts/start-dream-skin.ps1`. Add `-RestartExisting` only when the user authorized restarting an already-open Codex app.
 3. Run `scripts/verify-dream-skin.ps1 -ScreenshotPath <absolute-path>` after launch. Treat a missing hero, native composer, sidebar skin, or injection marker as failure. The native suggestion count is responsive and may be two to four.
 4. Inspect the screenshot against `references/qa-inventory.md`. Verify both the home screen and a normal task before signing off.
-5. Run `scripts/restore-dream-skin.ps1` for live removal. Add `-Uninstall` to delete shortcuts; add `-RestoreBaseTheme` when the user also wants the pre-install config backup restored.
+5. Run `scripts/restore-dream-skin.ps1` for live removal. Add `-Uninstall` only when the user also asks to delete shortcuts and local integration.
 
 ## Guardrails
 

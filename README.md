@@ -32,18 +32,39 @@
 
 ### macOS（完整版本）
 
-1. 打开 [`macos/`](./macos/)，双击 `Install Codex Dream Skin.command`。
-2. 双击 `Customize Codex Dream Skin.command`，在 Finder 选择图片并输入主题名称。
-3. 双击 `Start Codex Dream Skin.command` 应用主题；已运行时会优先热应用。
-4. 需要确认效果时，双击 `Verify Codex Dream Skin.command`；截图保存到桌面。
+在 Codex 对话中直接说：
 
-想回到官方外观，双击 `Restore Codex Dream Skin.command`。
+> 安装 Codex Skin
 
-### Windows
+之后无需打开终端或双击桌面文件，继续用自然语言操作即可：
 
-Windows 入口与说明见 [`windows/`](./windows/)：先运行 `scripts/install-dream-skin.ps1`，再运行 `scripts/start-dream-skin.ps1`。
+<p align="center">
+  <img src="docs/images/skill-one-line-demo.png" alt="把图片发给 Codex，并说用这张图片换 Codex Skin" width="327"><br>
+  <sub>发一张图片，说一句话，剩下的安装、保存与应用流程交给 Skill。</sub>
+</p>
 
-> macOS 使用前请先启动过一次官方 Codex Desktop；安装后引擎位于 `~/.codex/codex-dream-skin-studio`，你的图片、主题状态与日志保存在 `~/Library/Application Support/CodexDreamSkinStudio`。
+- “用这张图片换 Codex Skin”
+- “列出已安装皮肤”
+- “切换到「星航员」皮肤”
+- “验证当前皮肤并截图”
+- “恢复 Codex 官方外观”
+
+Skill 会自动完成安装、主题保存、应用和验证；确实需要重启 Codex 时会先征得确认。桌面的 `Codex Skin.command` 仍会随安装创建，但只是离线或手动操作的备用入口。
+
+> macOS 安装后引擎位于 `~/.codex/codex-dream-skin-studio`，你的图片、主题状态与日志保存在 `~/Library/Application Support/CodexDreamSkinStudio`。换肤流程不会读取或改写 Codex 的 `config.toml`。
+
+### Windows（同样支持 Skill）
+
+安装仓库提供的 `codex-skin-skill` 插件后，也可以直接在 Codex 对话中说：
+
+- “安装 Codex Skin”
+- “用这张图片创建并应用 Windows 皮肤”
+- “列出已安装的 Windows 皮肤”
+- “切换到「主题名」皮肤”
+- “验证当前皮肤”
+- “恢复 Codex 官方外观”
+
+Skill 会直接执行 [`windows/`](./windows/) 下的安全脚本；需要关闭并重启已运行的 Codex 时会先确认。无需用户自己打开 PowerShell，脚本命令只作为手动排障入口保留。
 
 ## 你会得到什么
 
@@ -70,16 +91,20 @@ Windows 入口与说明见 [`windows/`](./windows/)：先运行 `scripts/install
 
 更多示例和 macOS 的图片尺寸、命令行参数说明，见 [`macos/README.md`](./macos/README.md)。
 
-## 使用 `codex-skin` skill
+## 使用 `codex-skin-skill` 插件
 
-已安装全局 skill 后，直接告诉 Codex 你想做什么即可，例如：
+这是 macOS 和 Windows 都推荐的操作方式。安装插件后，直接告诉 Codex 你想做什么：
 
 - “安装 Codex Skin”
 - “用这张图定制 Codex Skin”
+- “列出已安装皮肤”
+- “切换到「主题名」皮肤”
 - “应用当前主题并截图验证”
 - “恢复 Codex 官方外观”
 
-它会复用上面的安全入口完成安装、定制、热应用、验证或恢复；重启前会先征得确认。
+把图片作为对话附件发来即可，不需要先复制到指定目录。Skill 会根据当前平台复用安全脚本完成安装、定制、列举、切换、应用、验证或恢复；需要重启时会先确认。macOS 使用一次性、非常驻的交接任务完成重启，Windows 则直接调用已授权的 PowerShell 工作流，均不要求用户再去桌面操作。
+
+插件包含主题管理与主题创建两个 skill；其 manifest 位于 [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json)。
 
 ## 安全说明
 

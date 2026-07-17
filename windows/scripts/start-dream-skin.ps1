@@ -3,7 +3,8 @@ param(
   [int]$Port = 9335,
   [switch]$RestartExisting,
   [string]$ProfilePath,
-  [switch]$ForegroundInjector
+  [switch]$ForegroundInjector,
+  [string]$Theme
 )
 
 $ErrorActionPreference = 'Stop'
@@ -43,7 +44,7 @@ if (-not (Test-CodexDebugPort $Port)) {
   if (-not $package) { throw 'The OpenAI.Codex Store package is not installed.' }
   $exe = Join-Path $package.InstallLocation 'app\ChatGPT.exe'
   if (-not (Test-Path -LiteralPath $exe)) { throw "Codex executable not found: $exe" }
-  $arguments = @("--remote-debugging-port=$Port")
+  $arguments = @("--remote-debugging-address=127.0.0.1", "--remote-debugging-port=$Port")
   if ($ProfilePath) {
     New-Item -ItemType Directory -Force -Path $ProfilePath | Out-Null
     $arguments += "--user-data-dir=$ProfilePath"
@@ -65,11 +66,14 @@ if (Test-Path -LiteralPath $StatePath) {
 }
 
 if ($ForegroundInjector) {
-  & $node $Injector --watch --port $Port
+  $foregroundArgs = @($Injector, '--watch', '--port', "$Port")
+  if ($Theme) { $foregroundArgs += @('--theme', $Theme) }
+  & $node @foregroundArgs
   exit $LASTEXITCODE
 }
 
 $injectorArgs = @("`"$Injector`"", '--watch', '--port', "$Port")
+if ($Theme) { $injectorArgs += @('--theme', "`"$Theme`"") }
 $daemon = Start-Process -FilePath $node -ArgumentList $injectorArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput $StdoutPath -RedirectStandardError $StderrPath
 @{
   port = $Port
@@ -77,6 +81,7 @@ $daemon = Start-Process -FilePath $node -ArgumentList $injectorArgs -WindowStyle
   startedAt = (Get-Date).ToString('o')
   skillRoot = $SkillRoot
   profilePath = $ProfilePath
+  theme = $Theme
 } | ConvertTo-Json | Set-Content -LiteralPath $StatePath -Encoding utf8
 
 $verified = $false

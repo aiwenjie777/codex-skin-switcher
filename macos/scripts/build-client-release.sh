@@ -25,7 +25,7 @@ trap '/bin/rm -rf "$TMP"' EXIT
   > "$CLIENT_ROOT/安装 Codex 主题编辑器.command"
 
 /usr/bin/printf '%s\n' \
-  'Codex 主题编辑器 1.1.1' \
+  'Codex 主题编辑器 1.3.4' \
   '' \
   '推荐方式：把这个完整 ZIP、你喜欢的图片和“给 Codex 的部署提示词.md”一起发给自己的 Codex。' \
   '' \
@@ -35,6 +35,7 @@ trap '/bin/rm -rf "$TMP"' EXIT
   > "$CLIENT_ROOT/使用说明.txt"
 
 /bin/cp "$ROOT/CLIENT_DEPLOY_PROMPT.md" "$CLIENT_ROOT/给 Codex 的部署提示词.md"
+/bin/cp "$ROOT/SKIN_PACKAGES.md" "$CLIENT_ROOT/皮肤包格式说明.md"
 /bin/chmod 755 "$CLIENT_ROOT/安装 Codex 主题编辑器.command"
 /bin/chmod 755 "$ENGINE"/*.command "$ENGINE"/scripts/*.sh "$ENGINE"/tests/*.sh
 /usr/bin/xattr -cr "$CLIENT_ROOT"
