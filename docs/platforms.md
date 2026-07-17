@@ -21,7 +21,7 @@
 | 源码（本整理包） | `Codex-Dream-Skin/macos/` |
 | 安装后引擎 | `~/.codex/codex-dream-skin-studio` |
 | 状态 / 日志 | `~/Library/Application Support/CodexDreamSkinStudio` |
-| Codex 配置 | `~/.codex/config.toml`（仅外观相关项可能被改，可恢复） |
+| Codex 配置 | 不读取、不修改 `~/.codex/config.toml` |
 
 ### Windows
 
@@ -29,7 +29,7 @@
 |------|------|
 | 源码（本整理包） | `Codex-Dream-Skin/windows/` |
 | 状态 / 日志 | `%LOCALAPPDATA%\CodexDreamSkin` |
-| Codex 配置 | `%USERPROFILE%\.codex\config.toml` |
+| Codex 配置 | 不读取、不修改 `%USERPROFILE%\.codex\config.toml` |
 | 默认 CDP 端口 | `9335`（Mac 包默认从 `9341` 起选空闲口） |
 
 ## 能力矩阵

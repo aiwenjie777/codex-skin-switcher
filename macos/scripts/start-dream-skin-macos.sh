@@ -17,12 +17,14 @@ PORT_EXPLICIT="false"
 RESTART_EXISTING="false"
 PROMPT_RESTART="false"
 FOREGROUND_INJECTOR="false"
+INTERNAL_RESTART_WORKER="false"
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --port) PORT="${2:-}"; PORT_EXPLICIT="true"; shift 2 ;;
     --restart-existing) RESTART_EXISTING="true"; shift ;;
     --prompt-restart) PROMPT_RESTART="true"; shift ;;
     --foreground-injector) FOREGROUND_INJECTOR="true"; shift ;;
+    --internal-restart-worker) INTERNAL_RESTART_WORKER="true"; shift ;;
     *) fail "Unknown start argument: $1" ;;
   esac
 done
@@ -48,6 +50,42 @@ if codex_is_running && [ "$DEBUG_READY" = "false" ]; then
     RESTART_EXISTING="true"
   fi
   [ "$RESTART_EXISTING" = "true" ] || fail "Codex is already running without the verified skin CDP endpoint. Close it first or pass --restart-existing."
+  if [ "$INTERNAL_RESTART_WORKER" = "false" ]; then
+    RESTART_JOB_LABEL="com.openai.codex-dream-skin-studio.restart-worker"
+    RESTART_PLIST="$STATE_ROOT/restart-worker.plist"
+    HANDOFF_LOG="$STATE_ROOT/restart-handoff.log"
+    uid="$(/usr/bin/id -u)"
+    /bin/launchctl bootout "gui/$uid/$RESTART_JOB_LABEL" >/dev/null 2>&1 || true
+    xml_escape() {
+      /usr/bin/sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' -e 's/"/\&quot;/g'
+    }
+    worker_script="$(printf '%s' "$SCRIPT_DIR/start-dream-skin-macos.sh" | xml_escape)"
+    worker_log="$(printf '%s' "$HANDOFF_LOG" | xml_escape)"
+    /usr/bin/printf '%s\n' \
+      '<?xml version="1.0" encoding="UTF-8"?>' \
+      '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' \
+      '<plist version="1.0"><dict>' \
+      "<key>Label</key><string>$RESTART_JOB_LABEL</string>" \
+      '<key>ProgramArguments</key><array>' \
+      '<string>/bin/bash</string>' \
+      "<string>$worker_script</string>" \
+      '<string>--port</string>' \
+      "<string>$PORT</string>" \
+      '<string>--restart-existing</string>' \
+      '<string>--internal-restart-worker</string>' \
+      '</array>' \
+      '<key>RunAtLoad</key><true/>' \
+      '<key>KeepAlive</key><false/>' \
+      "<key>StandardOutPath</key><string>$worker_log</string>" \
+      "<key>StandardErrorPath</key><string>$worker_log</string>" \
+      '</dict></plist>' > "$RESTART_PLIST"
+    /bin/chmod 600 "$RESTART_PLIST"
+    : > "$HANDOFF_LOG"
+    /bin/launchctl bootstrap "gui/$uid" "$RESTART_PLIST" \
+      || fail "Could not start the one-shot restart handoff."
+    printf 'Restart handoff prepared. Codex will relaunch with the loopback skin port.\n'
+    exit 0
+  fi
   stop_codex true
 fi
 
@@ -55,8 +93,6 @@ if [ "$DEBUG_READY" = "false" ]; then
   PORT="$(select_available_port "$PORT")"
   printf 'Launching Codex with skin debug port %s…\n' "$PORT" >&2
   launch_codex_with_cdp "$PORT"
-  # Some builds open the window slowly; also try activating the app once.
-  /usr/bin/open -na "$CODEX_BUNDLE" --args --remote-debugging-address=127.0.0.1 --remote-debugging-port="$PORT" >/dev/null 2>&1 || true
   if ! wait_for_cdp "$PORT"; then
     # Last resort: if something already listens and answers HTTP, continue.
     if cdp_http_ready "$PORT"; then
@@ -65,6 +101,7 @@ if [ "$DEBUG_READY" = "false" ]; then
       fail "Codex did not expose a loopback CDP endpoint on port $PORT within 45 seconds. See $APP_LOG and $APP_ERROR_LOG"
     fi
   fi
+  /usr/bin/osascript -e 'tell application id "com.openai.codex" to activate' >/dev/null 2>&1 || true
 fi
 
 if [ -f "$STATE_PATH" ]; then

@@ -13,22 +13,44 @@
   Unofficial community project · local loopback CDP only · never modifies <code>.app</code>, <code>app.asar</code>, or code signatures.
 </p>
 
+## WeChat Community
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="./docs/images/wechat-qr.png" alt="Codex Dream Skin WeChat group QR code" width="220"><br>
+      <sub>WeChat group: scan the QR code to join</sub>
+    </td>
+    <td align="center">
+      <img src="./docs/images/wechat.png" alt="Author's personal WeChat QR code" width="220"><br>
+      <sub>Personal WeChat: include “Codex Skin” in your request</sub>
+    </td>
+  </tr>
+</table>
+
 ## Get started in 30 seconds
 
 ### macOS (full experience)
 
-1. Open [`macos/`](./macos/) and double-click `Install Codex Dream Skin.command`.
-2. Double-click `Customize Codex Dream Skin.command`, choose an image in Finder, and name the theme.
-3. Double-click `Start Codex Dream Skin.command` to apply it. It prefers hot re-apply when Codex is already running.
-4. Double-click `Verify Codex Dream Skin.command` whenever you want a screenshot check; the screenshot is saved to your Desktop.
+Tell Codex directly in the conversation:
 
-To return to the stock interface, double-click `Restore Codex Dream Skin.command`.
+> Install Codex Skin
+
+After that, there is no terminal or Desktop handoff for normal use. Continue with natural-language requests:
+
+- “Use this image as my Codex Skin”
+- “List installed skins”
+- “Switch to the Astronaut skin”
+- “Verify the current skin with screenshots”
+- “Restore the official Codex appearance”
+
+The skill handles installation, theme storage, application, and verification. It asks for confirmation before restarting Codex when a restart is actually required. The installed Desktop `Codex Skin.command` remains an optional manual fallback.
 
 ### Windows
 
 See [`windows/`](./windows/). Run `scripts/install-dream-skin.ps1`, then `scripts/start-dream-skin.ps1`.
 
-> Launch the official Codex Desktop once before using the macOS installer. After installation, the engine is in `~/.codex/codex-dream-skin-studio`; images, theme state, and logs are in `~/Library/Application Support/CodexDreamSkinStudio`.
+> After macOS installation, the engine is in `~/.codex/codex-dream-skin-studio`; images, theme state, and logs are in `~/Library/Application Support/CodexDreamSkinStudio`. The skin workflow does not read or rewrite Codex `config.toml`.
 
 ## What you get
 
@@ -57,14 +79,18 @@ For more previews, image guidance, and macOS command-line options, see [`macos/R
 
 ## Use the `codex-skin` skill
 
-After installing the global skill, tell Codex what you want to do:
+This is the recommended macOS workflow. After installing the global skill, tell Codex what you want to do:
 
 - “Install Codex Skin”
 - “Customize Codex Skin with this image”
+- “List installed skins”
+- “Switch to the <theme name> skin”
 - “Apply the active theme and verify it with a screenshot”
 - “Restore the official Codex appearance”
 
-The skill uses the same safe operations for installation, customization, hot re-apply, verification, and restore. It asks before a restart.
+Attach the image directly to the conversation; you do not need to copy it into a special folder first. The skill uses the project's safe operations for installation, customization, listing, switching, hot re-apply, verification, and restore. When a restart is needed, it asks first and then uses a one-shot, non-persistent handoff—no extra Desktop action is required.
+
+The repository also includes an installable `codex-skin-switcher` plugin with skin-management and theme-creation skills; its manifest is [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json).
 
 ## Safety
 

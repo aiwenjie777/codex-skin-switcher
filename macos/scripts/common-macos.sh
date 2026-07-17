@@ -26,7 +26,7 @@ START_ERROR_LOG="$STATE_ROOT/start-error.log"
 CODEX_APP_JOB_LABEL="com.openai.codex-dream-skin-studio.app"
 INJECTOR_JOB_LABEL="com.openai.codex-dream-skin-studio.injector"
 EXPECTED_CODEX_TEAM_ID="${CODEX_EXPECTED_TEAM_ID:-2DC432GLL2}"
-SKIN_VERSION="1.1.1"
+SKIN_VERSION="1.3.4"
 
 fail() {
   local message="$*"
@@ -510,19 +510,14 @@ launch_codex_with_cdp() {
   : > "$APP_LOG"
   : > "$APP_ERROR_LOG"
   release_codex_launchd_job
-  # Start as a normal user process (NOT launchctl submit). submit keeps a job
-  # that will restart Codex when the window is closed.
-  /usr/bin/open -na "$CODEX_BUNDLE" --args \
+  # Launch the signed executable directly so Chromium receives the CDP flags.
+  # Recent Codex builds may let `open -na --args` start a normal instance while
+  # silently dropping these flags, leaving the injector without an endpoint.
+  # This remains a normal user process and is never registered with launchd.
+  /usr/bin/nohup "$CODEX_EXE" \
     --remote-debugging-address=127.0.0.1 \
     --remote-debugging-port="$port" \
-    >>"$APP_LOG" 2>>"$APP_ERROR_LOG" || true
-  # Fallback if open failed to pass args on some builds
-  if ! codex_is_running; then
-    /usr/bin/nohup "$CODEX_EXE" \
-      --remote-debugging-address=127.0.0.1 \
-      --remote-debugging-port="$port" \
-      >>"$APP_LOG" 2>>"$APP_ERROR_LOG" &
-  fi
+    >>"$APP_LOG" 2>>"$APP_ERROR_LOG" &
 }
 
 launch_codex_normally() {

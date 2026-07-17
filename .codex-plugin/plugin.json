@@ -1,0 +1,17 @@
+{
+  "name": "codex-skin-switcher",
+  "version": "0.1.0",
+  "description": "Manage, create, apply, verify, and restore Codex desktop themes.",
+  "author": { "name": "Codex Skin contributors" },
+  "license": "MIT",
+  "keywords": ["codex", "theme", "skin", "desktop", "personalization"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Codex Skin Switcher",
+    "shortDescription": "Create and switch Codex desktop themes.",
+    "longDescription": "A safe local-CDP theme manager for Codex Desktop.",
+    "category": "Productivity",
+    "capabilities": ["Skills", "Write"],
+    "defaultPrompt": ["$codex-skin-switcher", "$codex-skin-switcher 创建主题：赛博朋克风格"]
+  }
+}

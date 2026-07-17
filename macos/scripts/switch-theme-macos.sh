@@ -16,6 +16,9 @@ while [ "$#" -gt 0 ]; do
 done
 
 [ -n "$THEME_ID" ] || fail "Usage: switch-theme-macos.sh --id <theme-id>"
+case "$THEME_ID" in
+  *[!A-Za-z0-9._-]*|.|..|"") fail "Theme ID may contain only letters, numbers, dots, underscores, and dashes." ;;
+esac
 
 ensure_state_root
 THEMES_ROOT="$STATE_ROOT/themes"

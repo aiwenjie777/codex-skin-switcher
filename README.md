@@ -32,18 +32,25 @@
 
 ### macOS（完整版本）
 
-1. 打开 [`macos/`](./macos/)，双击 `Install Codex Dream Skin.command`。
-2. 双击 `Customize Codex Dream Skin.command`，在 Finder 选择图片并输入主题名称。
-3. 双击 `Start Codex Dream Skin.command` 应用主题；已运行时会优先热应用。
-4. 需要确认效果时，双击 `Verify Codex Dream Skin.command`；截图保存到桌面。
+在 Codex 对话中直接说：
 
-想回到官方外观，双击 `Restore Codex Dream Skin.command`。
+> 安装 Codex Skin
+
+之后无需打开终端或双击桌面文件，继续用自然语言操作即可：
+
+- “用这张图片换 Codex Skin”
+- “列出已安装皮肤”
+- “切换到「星航员」皮肤”
+- “验证当前皮肤并截图”
+- “恢复 Codex 官方外观”
+
+Skill 会自动完成安装、主题保存、应用和验证；确实需要重启 Codex 时会先征得确认。桌面的 `Codex Skin.command` 仍会随安装创建，但只是离线或手动操作的备用入口。
 
 ### Windows
 
 Windows 入口与说明见 [`windows/`](./windows/)：先运行 `scripts/install-dream-skin.ps1`，再运行 `scripts/start-dream-skin.ps1`。
 
-> macOS 使用前请先启动过一次官方 Codex Desktop；安装后引擎位于 `~/.codex/codex-dream-skin-studio`，你的图片、主题状态与日志保存在 `~/Library/Application Support/CodexDreamSkinStudio`。
+> macOS 安装后引擎位于 `~/.codex/codex-dream-skin-studio`，你的图片、主题状态与日志保存在 `~/Library/Application Support/CodexDreamSkinStudio`。换肤流程不会读取或改写 Codex 的 `config.toml`。
 
 ## 你会得到什么
 
@@ -72,14 +79,18 @@ Windows 入口与说明见 [`windows/`](./windows/)：先运行 `scripts/install
 
 ## 使用 `codex-skin` skill
 
-已安装全局 skill 后，直接告诉 Codex 你想做什么即可，例如：
+这是 macOS 推荐且最简单的操作方式。已安装全局 skill 后，直接告诉 Codex 你想做什么：
 
 - “安装 Codex Skin”
 - “用这张图定制 Codex Skin”
+- “列出已安装皮肤”
+- “切换到「主题名」皮肤”
 - “应用当前主题并截图验证”
 - “恢复 Codex 官方外观”
 
-它会复用上面的安全入口完成安装、定制、热应用、验证或恢复；重启前会先征得确认。
+把图片作为对话附件发来即可，不需要先复制到指定目录。Skill 会复用项目的安全脚本完成安装、定制、列举、切换、热应用、验证或恢复；需要重启时会先确认，再通过一次性、非常驻的交接任务完成，不要求用户在桌面继续操作。
+
+仓库也提供可安装的 `codex-skin-switcher` 插件入口，包含主题管理与主题创建两个 skill；其 manifest 位于 [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json)。
 
 ## 安全说明
 

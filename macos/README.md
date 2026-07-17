@@ -11,8 +11,22 @@ This project injects through **local loopback CDP**. It does **not** modify the 
 ## Requirements
 
 - macOS
-- Official Codex Desktop installed and launched at least once (`~/.codex/config.toml` exists)
+- Official Codex Desktop installed
 - No global Node.js install required (uses Codex’s signed bundled Node after validation)
+- The skin workflow does not read or modify `~/.codex/config.toml`
+
+## Recommended: operate entirely through the Skill
+
+With the global `codex-skin` skill installed, normal use happens entirely in the Codex conversation. No terminal command or Desktop double-click is required:
+
+- “Install Codex Skin”
+- Attach an image and say “Use this image as my Codex Skin”
+- “List installed skins”
+- “Switch to the <theme name> skin”
+- “Verify the current skin with screenshots”
+- “Restore the official Codex appearance”
+
+The skill saves image-based themes to the theme library, prefers a hot re-apply when loopback CDP is already available, and asks before any required restart. A confirmed restart or restore is handed to a one-shot, non-persistent LaunchAgent so the operation can finish even when the current Codex window closes.
 
 ## Quick start (from this repo)
 
@@ -20,19 +34,13 @@ This project injects through **local loopback CDP**. It does **not** modify the 
 # 1) Optional static checks (needs Codex.app present for bundled Node path)
 ./tests/run-tests.sh
 
-# 2) Install to the stable path and create Desktop launchers
+# 2) Manual fallback: install to the stable path and create Desktop launchers
 ./scripts/install-dream-skin-macos.sh --no-launch
 
-# 3) Customize with your image (Finder picker if you omit flags)
-~/.codex/codex-dream-skin-studio/scripts/customize-theme-macos.sh
+# 3) Double-click the Desktop “Codex Skin.command” and use its menu.
+#    It can choose an image, switch saved themes, verify, or restore.
 
-# 4) Start / re-apply, verify, or restore via Desktop:
-#    Codex Dream Skin.command
-#    Codex Dream Skin - Customize.command
-#    Codex Dream Skin - Verify.command
-#    Codex Dream Skin - Restore.command
-
-# 5) Optional: menu bar (SwiftBar) — apply / pause / change image
+# 4) Optional: menu bar (SwiftBar) — apply / pause / change image
 ./Install\ Menu\ Bar.command
 # Look for 🎨 Skin in the top-right menu bar
 ```
@@ -58,7 +66,7 @@ That ZIP contains a visible installer plus a hidden `.codex-dream-skin-studio` e
 ## How it works (security boundary)
 
 1. Discover `com.openai.codex` and validate signature / Team ID / arch / bundled Node.
-2. Start Codex via user `launchd` with CDP bound to `127.0.0.1` only.
+2. Start the validated, signed Codex executable with CDP bound to `127.0.0.1` only. If the request comes from inside Codex, use a one-shot, non-persistent LaunchAgent to finish the confirmed restart after the current window closes.
 3. Accept the debug port only when it belongs to Codex (or a legitimate child).
 4. Inject only into expected `app://` renderer targets.
 5. Keep a small injector alive across reloads and route changes.
@@ -90,6 +98,22 @@ Reset to the bundled abstract demo:
 ```bash
 ~/.codex/codex-dream-skin-studio/scripts/customize-theme-macos.sh --reset-demo
 ```
+
+Install a data-only skin package (ZIP or folder):
+
+```bash
+macos/scripts/apply-skin-package-macos.sh --package "/path/to/skin-package.zip"
+```
+
+The package format and safety limits are documented in [`SKIN_PACKAGES.md`](./SKIN_PACKAGES.md).
+
+For a task-page regression check, open an existing Codex task and run:
+
+```bash
+macos/scripts/verify-dream-skin-macos.sh --require-task --screenshot "$HOME/Desktop/Codex Dream Skin Task Verification.png"
+```
+
+This checks that the themed task page keeps its native sidebar and composer visible, contains a visible task-content region, and does not introduce horizontal overflow.
 
 ## License
 

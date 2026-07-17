@@ -51,9 +51,7 @@ fi
 discover_codex_app
 require_macos_runtime
 ensure_state_root
-[ -f "$CONFIG_PATH" ] || fail "Codex config not found: $CONFIG_PATH. Launch Codex once, close it, and rerun the installer."
 "$NODE" "$INJECTOR" --check-payload --theme-dir "$THEME_DIR" >/dev/null
-"$NODE" "$SCRIPT_DIR/theme-config.mjs" install "$CONFIG_PATH" "$THEME_BACKUP_PATH"
 
 shell_quote() {
   "$NODE" -e 'process.stdout.write(JSON.stringify(process.argv[1]))' "$1"
@@ -79,11 +77,13 @@ if [ "$CREATE_LAUNCHERS" = "true" ]; then
   customize_script="$(shell_quote "$SCRIPT_DIR/customize-theme-macos.sh")"
   verify_script="$(shell_quote "$SCRIPT_DIR/verify-dream-skin-macos.sh")"
   restore_script="$(shell_quote "$SCRIPT_DIR/restore-dream-skin-macos.sh")"
+  manager_script="$(shell_quote "$SCRIPT_DIR/open-skin-manager-macos.sh")"
   screenshot="$(shell_quote "$HOME/Desktop/Codex Dream Skin Verification.png")"
   write_launcher "$HOME/Desktop/Codex Dream Skin.command" "exec $start_script --port $PORT --prompt-restart"
   write_launcher "$HOME/Desktop/Codex Dream Skin - Customize.command" "exec $customize_script"
   write_launcher "$HOME/Desktop/Codex Dream Skin - Verify.command" "$verify_script --screenshot $screenshot && /usr/bin/open $screenshot"
-  write_launcher "$HOME/Desktop/Codex Dream Skin - Restore.command" "exec $restore_script --restore-base-theme --restart-codex"
+  write_launcher "$HOME/Desktop/Codex Dream Skin - Restore.command" "exec $restore_script --restart-codex"
+  write_launcher "$HOME/Desktop/Codex Skin.command" "exec $manager_script"
 fi
 
 printf 'Codex Dream Skin Studio %s installed at %s for Codex %s using its signed Node.js %s.\n' \

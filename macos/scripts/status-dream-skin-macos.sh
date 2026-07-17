@@ -42,8 +42,12 @@ except Exception:
 PY
 }
 
-# Codex process: cheap name match only
-if /usr/bin/pgrep -x ChatGPT >/dev/null 2>&1; then
+# Codex process: match the signed app's main executable path. `pgrep -x`
+# can miss recent builds because macOS exposes a truncated process name.
+if /bin/ps -axo command= | /usr/bin/awk '
+  /\.app\/Contents\/MacOS\/(ChatGPT|Codex)( |$)/ { found=1; exit }
+  END { exit(found ? 0 : 1) }
+'; then
   CODEX_RUNNING="true"
 fi
 
