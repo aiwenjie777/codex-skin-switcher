@@ -51,6 +51,8 @@ After that, there is no terminal or Desktop handoff for normal use. Continue wit
 
 The skill handles installation, theme storage, application, and verification. It asks for confirmation before restarting Codex when a restart is actually required. The installed Desktop `Codex Skin.command` remains an optional manual fallback.
 
+> After macOS installation, the engine is in `~/.codex/codex-dream-skin-studio`; images, theme state, and logs are in `~/Library/Application Support/CodexDreamSkinStudio`. The skin workflow does not read or rewrite Codex `config.toml`.
+
 ### Windows (Skill supported too)
 
 After installing this repository's `codex-skin-skill` plugin, ask Codex directly:
@@ -63,8 +65,6 @@ After installing this repository's `codex-skin-skill` plugin, ask Codex directly
 - “Restore the official Codex appearance”
 
 The skill runs the safe scripts under [`windows/`](./windows/) itself and asks before closing and restarting an existing Codex process. You do not need to open PowerShell; the script commands remain available only as a manual troubleshooting fallback.
-
-> After macOS installation, the engine is in `~/.codex/codex-dream-skin-studio`; images, theme state, and logs are in `~/Library/Application Support/CodexDreamSkinStudio`. The skin workflow does not read or rewrite Codex `config.toml`.
 
 ## What you get
 

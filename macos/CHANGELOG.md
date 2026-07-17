@@ -12,6 +12,7 @@
 - 仓库插件名称统一为 `codex-skin-skill`，避免把插件名称与内部的主题切换 Skill 混淆。
 - 主 README 增加“一张图、一句话完成换肤”的对话示例，让 Skill 操作入口更直观。
 - 主 README 明确 Windows 同样支持 `codex-skin-skill` 全流程操作；PowerShell 命令只保留为手动排障入口。
+- Windows 专项 README 与平台能力表同步 Skill 选图创建、安装、切换、验证和恢复能力，清理与主 README 冲突的旧说明。
 
 ---
 
