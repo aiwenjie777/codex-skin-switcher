@@ -1,5 +1,7 @@
 # Codex Skin
 
+<!-- codex-skin-skill repository documentation -->
+
 <p align="center">
   <strong>中文</strong> · <a href="./README.en.md">English</a>
 </p>
