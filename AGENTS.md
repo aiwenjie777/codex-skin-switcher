@@ -28,3 +28,9 @@ Instructions for AI / human maintainers working in this repo.
 ## Windows
 
 - When Windows gains parity features, add or extend a changelog under `windows/` (or a root CHANGELOG section) using the same user-facing style; keep platform labels clear.
+
+## Public Git identity
+
+- Commits published to `aiwenjie777/codex-skin-skill` must use `aiwenjie777 <305695997+aiwenjie777@users.noreply.github.com>` for both author and committer.
+- Before committing, run `skills/codex-skin-publisher/scripts/git-public-identity.sh configure`; before pushing, run its `audit-range <base-ref>` action.
+- Never force-push rewritten history without explicit user approval after listing the exact affected refs.

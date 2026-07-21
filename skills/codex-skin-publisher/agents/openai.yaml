@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Skin Publisher"
+  short_description: "Publish Codex Skin with the public Git identity."
+  default_prompt: "Publish these Codex Skin changes with the repository public identity checks."
