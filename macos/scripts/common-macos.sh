@@ -511,7 +511,7 @@ launch_codex_with_cdp() {
   : > "$APP_ERROR_LOG"
   release_codex_launchd_job
   # Launch the signed executable directly so Chromium receives the CDP flags.
-  # Recent Codex builds may let `open -na --args` start a normal instance while
+  # Recent Codex builds may let Launch Services start a normal instance while
   # silently dropping these flags, leaving the injector without an endpoint.
   # This remains a normal user process and is never registered with launchd.
   /usr/bin/nohup "$CODEX_EXE" \
