@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "caishen-readable",
+  "name": "Caishen Readable",
+  "version": "0.1.0",
+  "platforms": ["macos"],
+  "files": {
+    "theme": "theme.json",
+    "background": "background.png"
+  }
+}

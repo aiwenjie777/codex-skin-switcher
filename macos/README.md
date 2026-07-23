@@ -105,6 +105,12 @@ Install a data-only skin package (ZIP or folder):
 macos/scripts/apply-skin-package-macos.sh --package "/path/to/skin-package.zip"
 ```
 
+Try the bundled Caishen Readable package:
+
+```bash
+macos/scripts/apply-skin-package-macos.sh --package macos/skin-packages/caishen-readable
+```
+
 The package format and safety limits are documented in [`SKIN_PACKAGES.md`](./SKIN_PACKAGES.md).
 
 For a task-page regression check, open an existing Codex task and run:

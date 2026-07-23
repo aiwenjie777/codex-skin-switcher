@@ -48,6 +48,7 @@ After that, there is no terminal or Desktop handoff for normal use. Continue wit
 - “Switch to the Astronaut skin”
 - “Verify the current skin with screenshots”
 - “Restore the official Codex appearance”
+- “Install the bundled Caishen Readable skin package”
 
 The skill handles installation, theme storage, application, and verification. It asks for confirmation before restarting Codex when a restart is actually required. The installed Desktop `Codex Skin.command` remains an optional manual fallback.
 
@@ -105,6 +106,8 @@ This is the recommended workflow on both macOS and Windows. After installing the
 Attach the image directly to the conversation; you do not need to copy it into a special folder first. The skill selects the safe workflow for the current platform to install, customize, list, switch, apply, verify, or restore a skin. It asks before a restart. macOS uses a one-shot, non-persistent restart handoff; Windows invokes the authorized PowerShell workflow directly. Neither requires an extra Desktop action.
 
 The plugin includes skin-management and theme-creation skills; its manifest is [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json).
+
+For a data-only macOS package example, see [`macos/skin-packages/caishen-readable`](./macos/skin-packages/caishen-readable).
 
 ## Safety
 

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "caishen-readable",
+  "name": "Caishen Readable",
+  "brandSubtitle": "CODEX DREAM SKIN",
+  "tagline": "Soft fortune styling with readable work areas.",
+  "projectPrefix": "Choose project · ",
+  "projectLabel": "◉  Choose project",
+  "statusText": "THEME ONLINE",
+  "quote": "SHIP GOOD THINGS",
+  "image": "background.png",
+  "colors": {
+    "background": "#fff8ef",
+    "panel": "rgba(255, 250, 242, 0.92)",
+    "panelAlt": "rgba(255, 241, 222, 0.84)",
+    "accent": "#d96b42",
+    "accentAlt": "#e8b866",
+    "secondary": "#e8b866",
+    "highlight": "#2aa876",
+    "text": "#35251c",
+    "muted": "#7c6253",
+    "line": "rgba(217, 107, 66, 0.20)"
+  },
+  "promoTitle": "Caishen Readable",
+  "promoSub": "Light, public-safe skin package.",
+  "promoUrl": "https://codex-theme-gallery.howardhua.chatgpt.site/themes/caishen-readable?utm_source=aiwenjie777-codex-skin-skill&utm_medium=skin-package&utm_campaign=caishen-readable"
+}

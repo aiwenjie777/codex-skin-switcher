@@ -20,4 +20,10 @@ Install one with:
 macos/scripts/apply-skin-package-macos.sh --package "/absolute/path/to/my-skin.zip"
 ```
 
+Bundled example:
+
+```bash
+macos/scripts/apply-skin-package-macos.sh --package macos/skin-packages/caishen-readable
+```
+
 ZIP archives are checked before extraction: at most 128 entries, no dangerous paths, and at most 64 MB uncompressed. The installer then rejects path traversal, symbolic links, executable extensions, invalid manifest data, and oversized referenced assets. It never modifies the official Codex app or `~/.codex/config.toml`.

@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### 新增
+
+- 增加数据型 macOS 示例皮肤包 `macos/skin-packages/caishen-readable`，可通过 `apply-skin-package-macos.sh` 安装到主题库；包内只包含 manifest、主题配置与公开背景图，不包含脚本、二进制或私有 Codex 截图。
+
 ## 1.3.4 — 2026-07-17
 
 ### 修复

@@ -19,3 +19,9 @@ macos/scripts/apply-skin-package-macos.sh --package "/path/to/my-skin.zip"
 macos/scripts/apply-skin-package-macos.sh --list
 macos/scripts/switch-theme-macos.sh --id my-skin
 ```
+
+内置示例包：
+
+```bash
+macos/scripts/apply-skin-package-macos.sh --package macos/skin-packages/caishen-readable
+```

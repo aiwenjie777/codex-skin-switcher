@@ -50,6 +50,7 @@
 - “切换到「星航员」皮肤”
 - “验证当前皮肤并截图”
 - “恢复 Codex 官方外观”
+- “安装内置的 Caishen Readable 皮肤包”
 
 Skill 会自动完成安装、主题保存、应用和验证；确实需要重启 Codex 时会先征得确认。桌面的 `Codex Skin.command` 仍会随安装创建，但只是离线或手动操作的备用入口。
 
@@ -107,6 +108,8 @@ Skill 会直接执行 [`windows/`](./windows/) 下的安全脚本；需要关闭
 把图片作为对话附件发来即可，不需要先复制到指定目录。Skill 会根据当前平台复用安全脚本完成安装、定制、列举、切换、应用、验证或恢复；需要重启时会先确认。macOS 使用一次性、非常驻的交接任务完成重启，Windows 则直接调用已授权的 PowerShell 工作流，均不要求用户再去桌面操作。
 
 插件包含主题管理与主题创建两个 skill；其 manifest 位于 [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json)。
+
+macOS 数据型皮肤包示例见 [`macos/skin-packages/caishen-readable`](./macos/skin-packages/caishen-readable)。
 
 ## 安全说明
 
